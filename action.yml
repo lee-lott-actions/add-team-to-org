@@ -1,0 +1,35 @@
+name: Add Team to Organization
+description: Creates a new team in the specified GitHub organization with a given name and description using the GitHub API.
+author: Louisiana Office of Technology Services
+
+inputs:
+  team-name:
+    description: 'The slugified name of the team to create (e.g., "code-approvers")'
+    required: true
+  team-description:
+    description: 'Description of the team'
+    required: true
+  owner:
+    description: 'The owner of the organization (user or organization)'
+    required: true
+  token:
+    description: 'GitHub token with organization admin permissions'
+    required: true
+
+outputs:
+  result:
+    description: 'Result of the team creation operation ("success" or "failure")'
+    value: ${{ steps.action.outputs.result }}
+  error-message:
+    description: 'Error message if the team creation operation fails'
+    value: ${{ steps.action.outputs.error-message }}
+
+runs:
+  using: composite
+  steps:
+    - name: Add Team to Organization
+      id: action
+      run: |
+        source ${{ github.action_path }}/action.sh        
+        add_team_to_org "${{ inputs.team-name }}" "${{ inputs.team-description }}" "${{ inputs.owner }}" "${{ inputs.token }}"         
+      shell: bash
