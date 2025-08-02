@@ -1,6 +1,6 @@
 name: Add Team to Organization
 description: Creates a new team in the specified GitHub organization with a given name and description using the GitHub API.
-author: Louisiana Office of Technology Services
+author: Lee Lott
 
 inputs:
   team-name:
