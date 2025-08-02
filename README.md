@@ -57,7 +57,7 @@ This GitHub Action creates a new team in a specified GitHub organization with a 
              echo 'json={"team-name":"${{ github.event.comment.body }}","team-description":"Team created via issue comment"}' >> $GITHUB_OUTPUT
          - name: Add Team to Organization
            id: add-team
-           uses: la-actions/add-team-to-org@v1.0.0
+           uses: lee-lott/add-team-to-org@v1.0.0
            with:
              team-name: 'team-name'
              team-description: 'team-description'
