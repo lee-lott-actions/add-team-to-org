@@ -29,7 +29,7 @@ runs:
   steps:
     - name: Add Team to Organization
       id: action
+      shell: pwsh
       run: |
-        source ${{ github.action_path }}/action.sh        
-        add_team_to_org "${{ inputs.team-name }}" "${{ inputs.team-description }}" "${{ inputs.owner }}" "${{ inputs.token }}"         
-      shell: bash
+        . "${{ github.action_path }}/action.ps1"   
+        Add-GitHubTeamToOrg "${{ inputs.team-name }}" "${{ inputs.team-description }}" "${{ inputs.owner }}" "${{ inputs.token }}"
