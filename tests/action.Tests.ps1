@@ -33,7 +33,7 @@ Describe "Add-GitHubTeamToOrg" {
         Add-GitHubTeamToOrg -TeamName $TeamName -TeamDescription $TeamDescription -Owner $Owner -Token $Token
         $output = Get-Content $env:GITHUB_OUTPUT
         $output | Should -Contain "result=failure"
-        $output | Should -Contain "error-message=Failed to add team 'test-team' to organization 'test-owner' (HTTP Status: 400)"
+        $output | Should -Contain "error-message=Error: Failed to add team $TeamName to organization $Owner\. HTTP Status: 400"
     }
 
     It "add_team_to_org fails with empty team_name" {
@@ -63,4 +63,17 @@ Describe "Add-GitHubTeamToOrg" {
         $output | Should -Contain "result=failure"
         $output | Should -Contain "error-message=Missing required parameters: team-name, team-description, token, and owner must be provided."
     }
+	
+	It "writes result=failure and error-message on exception" {
+		Mock Invoke-WebRequest { throw "API Error" }
+
+		try {
+			Set-TemplateRepository -RepoName $RepoName -IsTemplate "true" -Owner $Owner -Token $Token
+		} catch {}
+
+		$output = Get-Content $env:GITHUB_OUTPUT
+		$output | Should -Contain "result=failure"
+		$output | Where-Object { $_ -match "^error-message=Error: Failed to add team $TeamName to organization $Owner\. Exception:" } |
+			Should -Not -BeNullOrEmpty
+	}	
 }
