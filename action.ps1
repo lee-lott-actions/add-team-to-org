@@ -45,14 +45,15 @@ function Add-GitHubTeamToOrg {
             Write-Host "Team '$TeamName' successfully created."
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=success"
         } else {
-            Write-Host "Error: Failed to add team '$TeamName' to organization '$Owner' (HTTP Status: $($response.StatusCode))"
+			$errorMsg = "Error: Failed to add team $TeamName to organization $Owner. HTTP Status: $($response.StatusCode)"
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
-            Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=Failed to add team '$TeamName' to organization '$Owner' (HTTP Status: $($response.StatusCode))"
+            Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=$errorMsg"
+            Write-Host $errorMsg
         }
     } catch {
-        $httpStatus = $_.Exception.Response.StatusCode.value__
-        Write-Host "Error: Failed to add team '$TeamName' to organization '$Owner' (HTTP Status: $httpStatus)"
-        Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
-        Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=Failed to add team '$TeamName' to organization '$Owner' (HTTP Status: $httpStatus)"
+		$errorMsg = "Error: Failed to add team $TeamName to organization $Owner. Exception: $($_.Exception.Message)"
+		Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
+		Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=$errorMsg"
+		Write-Host $errorMsg
     }
 }
