@@ -25,11 +25,10 @@ function Add-GitHubTeamToOrg {
     $uri = "$apiBaseUrl/orgs/$Owner/teams"
 
     $headers = @{
-        Authorization        = "Bearer $Token"
-        Accept               = "application/vnd.github+json"
-        "X-GitHub-Api-Version" = "2022-11-28"
-        "User-Agent"         = "pwsh-action"
-        "Content-Type"       = "application/json"
+        Authorization = "Bearer $Token"
+        Accept = "application/vnd.github+json"
+        "X-GitHub-Api-Version" = "2026-03-10"
+        "Content-Type" = "application/json"
     }
 
     $jsonBody = @{
