@@ -15,9 +15,7 @@ function Add-GitHubTeamToOrg {
         Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
         Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=Missing required parameters: team-name, team-description, token, and owner must be provided."
         return
-    }
-
-    Write-Host "Attempting to create team '$TeamName' in organization '$Owner' with description '$TeamDescription'."
+    }   
 
     # Use MOCK_API if set, otherwise default to GitHub API
     $apiBaseUrl = $env:MOCK_API
@@ -31,7 +29,7 @@ function Add-GitHubTeamToOrg {
         "Content-Type" = "application/json"
     }
 
-    $jsonBody = @{
+    $body = @{
         name                 = $TeamName
         description          = $TeamDescription
         privacy              = "closed"
@@ -39,7 +37,9 @@ function Add-GitHubTeamToOrg {
     } | ConvertTo-Json
 
     try {
-        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Post -Body $jsonBody
+		Write-Host "Attempting to create team '$TeamName' in organization '$Owner' with description '$TeamDescription'."
+        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Post -Body $body -SkipHttpErrorCheck
+		
         if ($response.StatusCode -eq 201) {
             Write-Host "Team '$TeamName' successfully created."
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=success"
