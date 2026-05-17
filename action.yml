@@ -32,4 +32,8 @@ runs:
       shell: pwsh
       run: |
         . "${{ github.action_path }}/action.ps1"   
-        Add-GitHubTeamToOrg "${{ inputs.team-name }}" "${{ inputs.team-description }}" "${{ inputs.owner }}" "${{ inputs.token }}"
+        Add-GitHubTeamToOrg `
+          -TeamName "${{ inputs.team-name }}" `
+          -TeamDescription "${{ inputs.team-description }}" `
+          -Owner "${{ inputs.owner }}" `
+          -Token "${{ inputs.token }}"
